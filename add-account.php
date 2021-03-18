@@ -25,7 +25,7 @@
         $permission = $_POST['RadioPermission'];$sql = "INSERT INTO `accounts` (`username`, `password`, `fullname`, `permisson`) VALUES ('$username', '$password', '$fullname', $permission);";
         $query = mysqli_query($conn, $sql);
         if ($query) {
-            header("location:index.php");
+            header("location:manage-accounts.php");
         } else {
             header("$sql Lỗi khi thêm!! $conn->error");
         }
@@ -43,7 +43,7 @@
                 <input type="text" class="form-control" name="fullname-input" placeholder="Enter fullname" minlength="8" maxlength="32" required>
             </div>
             <div class="my-3">
-                <label for="uccount-input">Username</label>
+                <label for="username-input">Username</label>
                 <input type="text" class="form-control" name="username-input" placeholder="Enter username" minlength="8" maxlength="30" required>
             </div>
             <div class="my-3">

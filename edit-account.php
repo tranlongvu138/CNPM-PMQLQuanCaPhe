@@ -44,7 +44,7 @@
 
     <div class="bg-light rounded mx-auto my-5 p-3" style="width: 400px;">
         <h2>Edit account</h2>
-        <p>Please fill this form to edit account.</p>
+        <p>Please fill this form to edit an account.</p>
         <hr>
         <form method="POST" action="edit-account.php">
             <div class="my-3">

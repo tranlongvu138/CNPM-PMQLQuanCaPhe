@@ -1,10 +1,10 @@
 <?php
 include "connection.php";
 $ID = $_GET['ID'];
-$sql = "UPDATE `accounts` SET `status` = '0' WHERE `accounts`.`user_id` = $ID;";
+$sql = "UPDATE `menu` SET `status` = '0' WHERE `menu`.`item_id` = $ID;";
 $query = mysqli_query($conn, $sql);
 if ($query) {
-    header("location:manage-accounts.php");
+    header("location:manage-menu.php");
 } else {
     echo "$sql $conn->error";
 }

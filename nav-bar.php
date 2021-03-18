@@ -26,9 +26,9 @@
                             <?php if($user[1]==0) {
                                 echo "<li><a class='dropdown-item' href='manage-accounts.php'>Manage Account</a></li><li>";
                                 echo "<li><a class='dropdown-item' href='manage-menu.php'>Manage Menu</a></li><li>";
+                                echo "<hr class='dropdown-divider'>";
                             }
                             ?>
-                                <hr class="dropdown-divider">
                             </li>
                             <li><a class='dropdown-item' href='logout.php'>Log Out</a></li>
                         </ul>
