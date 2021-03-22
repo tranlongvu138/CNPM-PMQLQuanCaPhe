@@ -16,6 +16,9 @@
 <body>
     <?php include('nav-bar.php'); ?>
     <?php
+    if ($user[1]==1) header("location:index.php");
+    ?>
+    <?php
     include("connection.php");
     //TÌM TỔNG SỐ RECORDS
     $result = mysqli_query($conn, 'SELECT count(user_id) AS total FROM accounts');
@@ -36,7 +39,7 @@
     $start = ($current_page - 1) * $limit;
     // BƯỚC 5: TRUY VẤN LẤY DANH SÁCH TIN TỨC
     // Có limit và start rồi thì truy vấn CSDL lấy danh sách tin tức
-    $sql = "SELECT * FROM `accounts` LIMIT $start, $limit";
+    $sql = "SELECT * FROM `accounts` INNER JOIN`employee` ON `accounts`.`user_id` = `employee`.`user_id` LIMIT $start, $limit";
     $result = mysqli_query($conn, $sql);
     $user = mysqli_fetch_all($result);
     ?>
@@ -61,18 +64,18 @@
                 echo "<tr class='d-flex'>";
                 echo "<th class='col-1'>$user[0]</th>";
                 echo "<td class='col-2'>$user[1]</td>";
-                echo "<td class='col-3'>$user[3]</td>";
-                if ($user[4] == 0) {
+                echo "<td class='col-3'>$user[7]</td>";
+                if ($user[3] == 0) {
                     echo "<td class='col-1'>Removed</td>";
-                } else if ($user[4] == 1) {
+                } else if ($user[3] == 1) {
                     echo "<td class='col-1'>Ready</td>";
                 }
-                if ($user[5] == 0) {
+                if ($user[4] == 0) {
                     echo "<td class='col-1'>Admin</td>";
-                } else if ($user[5] == 1) {
+                } else if ($user[4] == 1) {
                     echo "<td class='col-1'>Employee</td>";
                 }
-                echo "<td class='col-2'>$user[6]</td>";
+                echo "<td class='col-2'>$user[5]</td>";
                 echo "<td class='col-1'><i class='far fa-edit'><a href='edit-account.php?ID=$user[0]'> Edit</a></i></td>";
                 echo "<td class='col-1'><i class='far fa-trash-alt'><a href='remove-account.php?ID=$user[0]'> Remove</a></i></td>";
                 echo "</tr>";
@@ -81,7 +84,22 @@
             mysqli_close($conn);
             ?>
         </table>
-
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Confirm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Please click "Yes" to change this account!!
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" name="Edit" value="Yes"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <li class=" page-item <?php if ($current_page == 1 || $total_page == 1) echo "disabled"; ?>">

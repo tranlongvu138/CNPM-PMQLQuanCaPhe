@@ -15,18 +15,26 @@
 
 <body>
     <?php include('nav-bar.php'); ?>
-
+    <?php
+    if ($user[1]==1) header("location:index.php");
+    ?>
     <?php
     include("connection.php");
     if (isset($_POST['Edit'])) {
         $id = $_POST['ID'];
-        $fullname = trim($_POST['fullname-input']);
         $username = trim($_POST['username-input']);
         $password = trim($_POST['password-input']);
         $permission = $_POST['RadioPermission'];
-        $sql = "UPDATE `accounts` SET `username`='$username', `password`='$password', `fullname`='$fullname', `permisson`=$permission WHERE `user_id` = $id;";
-        echo  $sql;
-        $query = mysqli_query($conn, $sql);
+        $fullname = trim($_POST['fullname-input']);
+        $gender = $_POST['RadioGender'];
+        $phoneNumber = $_POST['phoneNumber-input'];
+        $address = trim($_POST['address-input']);
+        $wages = trim($_POST['wages-input']);
+        $sql = "START TRANSACTION;
+                UPDATE `accounts` SET `username`='$username', `password`='$password', `permisson`=$permission WHERE `user_id` = $id;
+                UPDATE `employee` SET `fullname`='$fullname', `gender`='$gender', `phoneNumber`=$phoneNumber, `address`='$address', `wages`='$wages' WHERE `user_id` = $id;
+                COMMIT;";
+        $query = mysqli_multi_query($conn, $sql);
         if ($query) {
             header("location:manage-accounts.php");
         } else {
@@ -35,7 +43,7 @@
         mysqli_close($conn);
     } else {
         include "connection.php";
-        $sql = "SELECT * FROM `accounts` WHERE `user_id` = $_GET[ID]";
+        $sql = "SELECT * FROM `accounts` INNER JOIN`employee` ON `accounts`.`user_id` = `employee`.`user_id` WHERE `accounts`.`user_id` = $_GET[ID]";
         $result = mysqli_query($conn, $sql);
         $user = mysqli_fetch_row($result);
         mysqli_close($conn);
@@ -47,13 +55,10 @@
         <p>Please fill this form to edit an account.</p>
         <hr>
         <form method="POST" action="edit-account.php">
+
             <div class="my-3">
                 <label for="ID" class="form-label">ID: </label>
                 <input type="text" class="form-control" name="ID" value="<?php echo $user[0] ?>" readonly>
-            </div>
-            <div class="my-3">
-                <label for="fullname-input">Fullname</label>
-                <input type="text" class="form-control" name="fullname-input" placeholder="Enter fullname" minlength="8" maxlength="32" value="<?php echo $user[3]; ?>" required>
             </div>
             <div class="my-3">
                 <label for="uccount-input">Username</label>
@@ -66,16 +71,63 @@
             <div class="row">
                 <label class="col">Permission</label>
                 <div class="form-check col">
-                    <input class="form-check-input" type="radio" name="RadioPermission" id="RadioAdmin" value="0" <?php if ($user[5] == 0) echo "checked"; ?>>
+                    <input class="form-check-input" type="radio" name="RadioPermission" id="RadioAdmin" value="0" <?php if ($user[4] == 0) echo "checked"; ?>>
                     <label class="form-check-label" for="RadioAdmin">Administrator</label>
                 </div>
                 <div class="form-check col">
-                    <input class="form-check-input" type="radio" name="RadioPermission" id="RadioEmployee" value="1" <?php if ($user[5] == 1) echo "checked"; ?>>
+                    <input class="form-check-input" type="radio" name="RadioPermission" id="RadioEmployee" value="1" <?php if ($user[4] == 1) echo "checked"; ?>>
                     <label class="form-check-label" for="RadioEmployee">Employee</label>
                 </div>
             </div>
+            <hr>
+            <div class="my-3">
+                <label for="fullname-input">Fullname</label>
+                <input type="text" class="form-control" name="fullname-input" placeholder="Enter fullname" minlength="8" maxlength="32" value="<?php echo $user[7]; ?>" required>
+            </div>
+            <div class="row">
+                <label class="col">Gender</label>
+                <div class="form-check col">
+                    <input class="form-check-input" type="radio" name="RadioGender" id="RadioMale" value="male" <?php if ($user[8] == "male") echo "checked"; ?>>
+                    <label class="form-check-label" for="RadioMale">Male</label>
+                </div>
+                <div class="form-check col">
+                    <input class="form-check-input" type="radio" name="RadioGender" id="RadioFemale" value="female" <?php if ($user[8] == "female") echo "checked"; ?>>
+                    <label class="form-check-label" for="RadioFemale">Female</label>
+                </div>
+            </div>
+            <div class="my-3">
+                <label for="phoneNumber-input">Phone Number</label>
+                <input type="text" class="form-control" name="phoneNumber-input" placeholder="Enter phoneNumber" min="0" max="9999999999" value="<?php echo $user[9]; ?>">
+            </div>
+            <div class="my-3">
+                <label for="address-input">Address</label>
+                <input type="text" class="form-control" name="address-input" placeholder="Enter address" maxlength="200" value="<?php echo $user[10]; ?>">
+            </div>
+                <label for="wages-input">Wages</label>
+            <div class="input-group my-3">
+                <input type="number" class="form-control" name="wages-input" placeholder="Enter wages" min="0" max="99999999999999999999" value="<?php echo $user[11]; ?>">
+                <div class="input-group-append">
+                    <span class="input-group-text">VND</span>
+                </div>
+            </div>
             <div class="d-grid gap-2 my-3">
-                <input type="submit" class="btn btn-primary" name="Edit" value="Edit"></input>
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Please click "Yes" to change this account!!
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" name="Edit" value="Yes"></input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">Change</button>
             </div>
 
             <hr>

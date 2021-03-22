@@ -16,6 +16,9 @@
 <body>
     <?php include('nav-bar.php'); ?>
     <?php
+    if ($user[1]==1) header("location:index.php");
+    ?>
+    <?php
     include("connection.php");
     //TÌM TỔNG SỐ RECORDS
     $result = mysqli_query($conn, 'SELECT count(item_id) AS total FROM menu');

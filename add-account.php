@@ -19,11 +19,21 @@
     <?php
     if (isset($_POST['Create'])) {
         include("connection.php");
-        $fullname = trim($_POST['fullname-input']);
         $username = trim($_POST['username-input']);
         $password = trim($_POST['password-input']);
-        $permission = $_POST['RadioPermission'];$sql = "INSERT INTO `accounts` (`username`, `password`, `fullname`, `permisson`) VALUES ('$username', '$password', '$fullname', $permission);";
-        $query = mysqli_query($conn, $sql);
+        $permission = $_POST['RadioPermission'];
+        $fullname = trim($_POST['fullname-input']);
+        $gender = $_POST['RadioGender'];
+        $phoneNumber = $_POST['phoneNumber-input'];
+        $address = trim($_POST['address-input']);
+        $wages = trim($_POST['wages-input']);
+        $permission = $_POST['RadioPermission'];
+        $sql = "START TRANSACTION;
+                INSERT INTO `accounts` (`username`, `password`, `permisson`) VALUES ('$username', '$password', $permission);
+                SET @user_id = LAST_INSERT_ID();
+                INSERT INTO `employee` (`fullname`, `gender`, `phoneNumber`, `address`, `wages`, `user_id`) VALUES ('$fullname', '$gender', $phoneNumber, '$address', '$wages', @user_id);
+                COMMIT;";
+        $query = mysqli_multi_query($conn, $sql);
         if ($query) {
             header("location:manage-accounts.php");
         } else {
@@ -38,10 +48,6 @@
         <p>Please fill this form to add a new account.</p>
         <hr>
         <form method="POST" action="add-account.php">
-            <div class="my-3">
-                <label for="fullname-input">Fullname</label>
-                <input type="text" class="form-control" name="fullname-input" placeholder="Enter fullname" minlength="8" maxlength="32" required>
-            </div>
             <div class="my-3">
                 <label for="username-input">Username</label>
                 <input type="text" class="form-control" name="username-input" placeholder="Enter username" minlength="8" maxlength="30" required>
@@ -59,6 +65,37 @@
                 <div class="form-check col">
                     <input class="form-check-input" type="radio" name="RadioPermission" id="RadioEmployee" value="1" checked>
                     <label class="form-check-label" for="RadioEmployee">Employee</label>
+                </div>
+            </div>
+            <hr>
+            <div class="my-3">
+                <label for="fullname-input">Fullname</label>
+                <input type="text" class="form-control" name="fullname-input" placeholder="Enter fullname" minlength="8" maxlength="32" required>
+            </div>
+            <div class="row">
+                <label class="col">Gender</label>
+                <div class="form-check col">
+                    <input class="form-check-input" type="radio" name="RadioGender" id="RadioMale" value="male" checked>
+                    <label class="form-check-label" for="RadioMale">Male</label>
+                </div>
+                <div class="form-check col">
+                    <input class="form-check-input" type="radio" name="RadioGender" id="RadioFemale" value="female">
+                    <label class="form-check-label" for="RadioFemale">Female</label>
+                </div>
+            </div>
+            <div class="my-3">
+                <label for="phoneNumber-input">Phone Number</label>
+                <input type="text" class="form-control" name="phoneNumber-input" placeholder="Enter phoneNumber" min="0" max="9999999999">
+            </div>
+            <div class="my-3">
+                <label for="address-input">Address</label>
+                <input type="text" class="form-control" name="address-input" placeholder="Enter address" maxlength="200">
+            </div>
+                <label for="wages-input">Wages</label>
+            <div class="input-group my-3">
+                <input type="number" class="form-control" name="wages-input" placeholder="Enter wages" min="0" max="99999999999999999999">
+                <div class="input-group-append">
+                    <span class="input-group-text">VND</span>
                 </div>
             </div>
             <div class="d-grid gap-2 my-3">

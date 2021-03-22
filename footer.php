@@ -5,7 +5,7 @@
             <div class="col-lg-6 col-md-12 my-3 my-md-4">
                 <h5 class="text-uppercase">About me</h5>
                 <span>
-                    This project is our final exam assignment<br>
+                    This project is our exam assignment<br>
                     Software Engineering (CSE481)<br>
                     Thanks my teacher!! Lê Nguyễn Tuấn Thành.
                 </span>

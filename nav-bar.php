@@ -15,7 +15,7 @@
                     </li>
                 <?php } else {
                     include("connection.php");
-                    $result = mysqli_query($conn, "SELECT `fullname`, `permisson` FROM `accounts` WHERE `user_id` = " . $_SESSION['logined']);
+                    $result = mysqli_query($conn, "SELECT `employee`.`fullname`, `accounts`.`permisson` FROM `accounts` INNER JOIN `employee` ON `accounts`.`user_id` = `employee`.`user_id` WHERE `accounts`.`user_id` = " . $_SESSION['logined']);
                     $user = mysqli_fetch_row($result);
                 ?>
                     <li class="nav-item dropdown">

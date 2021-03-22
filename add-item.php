@@ -15,7 +15,9 @@
 
 <body>
     <?php include('nav-bar.php'); ?>
-
+    <?php
+    if ($user[1]==1) header("location:index.php");
+    ?>
     <?php
     if (isset($_POST['Create'])) {
         include("connection.php");

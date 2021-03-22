@@ -15,7 +15,12 @@
 
 <body>
     <?php include('nav-bar.php'); ?>
-
+    <?php
+    if ($user[1]==1) header("location:index.php");
+    ?>
+    <?php
+    if ($user[1]==1) header("location:index.php");
+    ?>
     <?php
     include("connection.php");
     if (isset($_POST['Edit'])) {
@@ -62,7 +67,23 @@
             </div>
 
             <div class="d-grid gap-2 my-3">
-                <input type="submit" class="btn btn-primary" name="Edit" value="Edit"></input>
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Please click "Yes" to change this account!!
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" name="Edit" value="Yes"></input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">Change</button>
             </div>
 
             <hr>
