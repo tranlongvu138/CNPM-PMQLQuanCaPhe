@@ -1,3 +1,8 @@
+<?php
+include_once('../controlers/main.php');
+Ctrl_Main::checkPermisson();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,19 +14,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
     <title>Coffee Store - Manage Menu</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="img/iconlogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/iconlogo.png" type="image/x-icon">
 </head>
 
 <body>
     <?php include('nav-bar.php'); ?>
     <?php
-    if ($user[1]==1) header("location:index.php");
-    ?>
-    <?php
-    include("connection.php");
+    $db = new Database();
     //TÌM TỔNG SỐ RECORDS
-    $result = mysqli_query($conn, 'SELECT count(item_id) AS total FROM menu');
+    $result = mysqli_query($db->conn, 'SELECT count(item_id) AS total FROM menu');
     $row = mysqli_fetch_assoc($result);
     $total_records = $row['total'];
     //TÌM LIMIT VÀ CURRENT_PAGE
@@ -40,7 +42,7 @@
     // BƯỚC 5: TRUY VẤN LẤY DANH SÁCH TIN TỨC
     // Có limit và start rồi thì truy vấn CSDL lấy danh sách tin tức
     $sql = "SELECT * FROM `menu` WHERE `status` = 1 LIMIT $start, $limit";
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($db->conn, $sql);
     $menu = mysqli_fetch_all($result);
     ?>
     <div class="container bg-light p-3 my-3 rounded">
@@ -62,12 +64,11 @@
                 echo "<th class='col-1'>$item[0]</th>";
                 echo "<td class='col-6'>$item[1]</td>";
                 echo "<td class='col-3'>$item[2] VND</td>";
-                echo "<td class='col-1'><i class='far fa-edit'><a href='edit-item.php?ID=$item[0]'> Edit</a></i></td>";
-                echo "<td class='col-1'><i class='far fa-trash-alt'><a href='remove-item.php?ID=$item[0]'> Remove</a></i></td>";
+                echo "<td class='col-2'><i class='far fa-edit'><a href='edit-item.php?ID=$item[0]'> Edit</a></i></td>";
                 echo "</tr>";
                 echo "</tbody>";
             }
-            mysqli_close($conn);
+            mysqli_close($db->conn);
             ?>
         </table>
 
@@ -78,7 +79,6 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-
                 <?php
                 for ($i = $current_page - 1; $i <= $current_page + 1; $i++) {
                     if ($i == $current_page) {

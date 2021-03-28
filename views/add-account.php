@@ -1,3 +1,22 @@
+<?php
+include_once('../controlers/main.php');
+include_once('../controlers/account.php');
+Ctrl_Main::checkPermisson();
+if (isset($_POST['Create'])) {
+    $username = trim($_POST['username-input']);
+    $password = trim($_POST['password-input']);
+    $permisson = $_POST['RadioPermisson'];
+    $fullname = trim($_POST['fullname-input']);
+    $gender = $_POST['RadioGender'];
+    $phoneNumber = $_POST['phoneNumber-input'];
+    $address = trim($_POST['address-input']);
+    $wages = trim($_POST['wages-input']);
+
+    $result = Ctrl_Account::Create( $username, $password, $permisson, $fullname, $gender, $phoneNumber, $address, $wages );
+    if ($result == '0') header("location: ../views/manage-accounts.php");
+    else echo $result;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,39 +28,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
     <title>Coffee Store - Add a new account</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="img/iconlogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/iconlogo.png" type="image/x-icon">
 </head>
 
 <body>
     <?php include('nav-bar.php'); ?>
-
-    <?php
-    if (isset($_POST['Create'])) {
-        include("connection.php");
-        $username = trim($_POST['username-input']);
-        $password = trim($_POST['password-input']);
-        $permission = $_POST['RadioPermission'];
-        $fullname = trim($_POST['fullname-input']);
-        $gender = $_POST['RadioGender'];
-        $phoneNumber = $_POST['phoneNumber-input'];
-        $address = trim($_POST['address-input']);
-        $wages = trim($_POST['wages-input']);
-        $permission = $_POST['RadioPermission'];
-        $sql = "START TRANSACTION;
-                INSERT INTO `accounts` (`username`, `password`, `permisson`) VALUES ('$username', '$password', $permission);
-                SET @user_id = LAST_INSERT_ID();
-                INSERT INTO `employee` (`fullname`, `gender`, `phoneNumber`, `address`, `wages`, `user_id`) VALUES ('$fullname', '$gender', $phoneNumber, '$address', '$wages', @user_id);
-                COMMIT;";
-        $query = mysqli_multi_query($conn, $sql);
-        if ($query) {
-            header("location:manage-accounts.php");
-        } else {
-            header("$sql Lỗi khi thêm!! $conn->error");
-        }
-        mysqli_close($conn);
-    }
-    ?>
 
     <div class="bg-light rounded mx-auto my-5 p-3" style="width: 400px;">
         <h2>Add a new account</h2>
@@ -57,13 +49,13 @@
                 <input type="password" class="form-control" name="password-input" placeholder="Type password" minlength="8" maxlength="16" required>
             </div>
             <div class="row">
-                <label class="col">Permission</label>
+                <label class="col">Permisson</label>
                 <div class="form-check col">
-                    <input class="form-check-input" type="radio" name="RadioPermission" id="RadioAdmin" value="0">
+                    <input class="form-check-input" type="radio" name="RadioPermisson" id="RadioAdmin" value="0">
                     <label class="form-check-label" for="RadioAdmin">Administrator</label>
                 </div>
                 <div class="form-check col">
-                    <input class="form-check-input" type="radio" name="RadioPermission" id="RadioEmployee" value="1" checked>
+                    <input class="form-check-input" type="radio" name="RadioPermisson" id="RadioEmployee" value="1" checked>
                     <label class="form-check-label" for="RadioEmployee">Employee</label>
                 </div>
             </div>

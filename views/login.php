@@ -1,3 +1,10 @@
+<?php 
+include_once('../controlers/main.php');
+if (isset($_SESSION["logined"])) {header("location: /CoffeeStore/index.php");} 
+if (isset($_POST['SignIn'])){
+    Ctrl_Main::logIn( trim($_POST['username-input']), trim($_POST['pass-input']) );
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,42 +17,12 @@
 
     <script src="js/notify.js"></script>
     <title>Coffee Store - Log In</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="img/iconlogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/iconlogo.png" type="image/x-icon">
 </head>
 
 <body>
     <?php include('nav-bar.php'); ?>
-
-    <?php if (isset($_SESSION["logined"])) {header("location: index.php");} ?>
-
-    <?php
-    if (isset($_POST['SignIn'])) {
-        include('connection.php');
-        $username = trim($_POST['username-input']);
-        $password  = trim($_POST['pass-input']);
-        $sql = "SELECT `user_id`, `password`, `status` FROM `accounts` WHERE `username` = '$username'";
-        $resultSql = mysqli_query($conn, $sql);
-        $result = mysqli_fetch_array($resultSql);
-        $count = mysqli_num_rows($resultSql);
-
-        if ($count == 1) {
-            if ($password == $result[1]) {
-                if ($result[2] == 1) {
-                    $user = $result[0];
-                    include("logined.php");
-                    mysqli_close($conn);
-                    header("location: index.php");
-                } else {
-                    echo "Tài khoản không còn quyền truy cập!!";
-                }
-            } else {
-                echo "Thông tin đăng nhập không chính xác!!";
-            }
-        } else {
-            echo "Tài khoản không tồn tại!!";
-        }
-    } ?>
 
     <div class="bg-light rounded mx-auto my-5 p-3" style="width: 400px;">
         <h2>Sign In</h2>

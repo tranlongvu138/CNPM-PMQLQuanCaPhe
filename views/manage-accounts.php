@@ -1,3 +1,7 @@
+<?php
+include_once('../controlers/main.php');
+Ctrl_Main::checkPermisson();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,42 +13,33 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
     <title>Coffee Store - Manage Account</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="img/iconlogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/iconlogo.png" type="image/x-icon">
 </head>
 
 <body>
     <?php include('nav-bar.php'); ?>
+
     <?php
-    if ($user[1]==1) header("location:index.php");
-    ?>
-    <?php
-    include("connection.php");
-    //TÌM TỔNG SỐ RECORDS
-    $result = mysqli_query($conn, 'SELECT count(user_id) AS total FROM accounts');
+    $db = new Database();
+    $result = mysqli_query($db->conn, 'SELECT count(user_id) AS total FROM accounts');
     $row = mysqli_fetch_assoc($result);
     $total_records = $row['total'];
-    //TÌM LIMIT VÀ CURRENT_PAGE
     $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
     $limit = 10;
-    //TÍNH TOÁN TOTAL_PAGE
     $total_page = ceil($total_records / $limit);
-    //Giới hạn current_page trong khoảng 1 đến total_page
     if ($current_page > $total_page) {
         $current_page = $total_page;
     } else if ($current_page < 1) {
         $current_page = 1;
     }
-    // Tìm Start
     $start = ($current_page - 1) * $limit;
-    // BƯỚC 5: TRUY VẤN LẤY DANH SÁCH TIN TỨC
-    // Có limit và start rồi thì truy vấn CSDL lấy danh sách tin tức
-    $sql = "SELECT * FROM `accounts` INNER JOIN`employee` ON `accounts`.`user_id` = `employee`.`user_id` LIMIT $start, $limit";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM `accounts` INNER JOIN `employees` ON `accounts`.`user_id` = `employees`.`user_id` LIMIT $start, $limit";
+    $result = mysqli_query($db->conn, $sql);
     $user = mysqli_fetch_all($result);
     ?>
     <div class="container bg-light p-3 my-3 rounded">
-        <p class="h2">Manage Accouns</p>
+        <p class="h2">Manage Accounts</p>
         <a href="add-account.php"><i class="fas fa-plus-circle text-primary mb-3" data-bs-toggle="tooltip" data-bs-placement="right" title="Add a new account"></i> Add a new account</a>
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
@@ -53,9 +48,9 @@
                     <th class="col-2">Ussername</th>
                     <th class="col-3">Fullname</th>
                     <th class="col-1">Status</th>
-                    <th class="col-1">Permission</th>
+                    <th class="col-2">Permission</th>
                     <th class="col-2">Create At</th>
-                    <th class="col-2">Function</th>
+                    <th class="col-1">Function</th>
                 </tr>
             </thead>
             <?php
@@ -71,17 +66,16 @@
                     echo "<td class='col-1'>Ready</td>";
                 }
                 if ($user[4] == 0) {
-                    echo "<td class='col-1'>Admin</td>";
+                    echo "<td class='col-2'>Admin</td>";
                 } else if ($user[4] == 1) {
-                    echo "<td class='col-1'>Employee</td>";
+                    echo "<td class='col-2'>Employee</td>";
                 }
                 echo "<td class='col-2'>$user[5]</td>";
                 echo "<td class='col-1'><i class='far fa-edit'><a href='edit-account.php?ID=$user[0]'> Edit</a></i></td>";
-                echo "<td class='col-1'><i class='far fa-trash-alt'><a href='remove-account.php?ID=$user[0]'> Remove</a></i></td>";
                 echo "</tr>";
                 echo "</tbody>";
             }
-            mysqli_close($conn);
+            mysqli_close($db->conn);
             ?>
         </table>
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">

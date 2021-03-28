@@ -1,3 +1,16 @@
+<?php
+include_once('../controlers/main.php');
+include_once('../controlers/item.php');
+Ctrl_Main::checkPermisson();
+if (isset($_POST['Create'])) {
+    $name = trim($_POST['name-input']);
+    $price = $_POST['price-input'];
+
+    $result = Ctrl_Item::Create( $name, $price );
+    if ($result == '0') header("location: ../views/manage-menu.php");
+    else echo $result;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,30 +22,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
     <title>Coffee Store - Add a new item</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="img/iconlogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/iconlogo.png" type="image/x-icon">
 </head>
 
 <body>
     <?php include('nav-bar.php'); ?>
-    <?php
-    if ($user[1]==1) header("location:index.php");
-    ?>
-    <?php
-    if (isset($_POST['Create'])) {
-        include("connection.php");
-        $name = trim($_POST['name-input']);
-        $price = $_POST['price-input'];
-        $sql = "INSERT INTO `menu` (`name`, `price`) VALUES ('$name', $price);";
-        $query = mysqli_query($conn, $sql);
-        if ($query) {
-            header("location:manage-menu.php");
-        } else {
-            header("$sql Lỗi khi thêm!! $conn->error");
-        }
-        mysqli_close($conn);
-    }
-    ?>
 
     <div class="bg-light rounded mx-auto my-5 p-3" style="width: 400px;">
         <h2>Add a new item</h2>
