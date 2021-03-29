@@ -1,0 +1,35 @@
+body {
+    background-image: -webkit-linear-gradient(
+        rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.7)
+      ),
+      url(../img/background.jpg);
+    background-position: middle;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .signin:hover {
+    color: white;
+  }
+  .manager {
+    margin-top: 50px !important;
+    text-align: center;
+  }
+  
+  .button a {
+    background-color: brown !important;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    font-size: 25px;
+    border-radius: 20px;
+  }
+  .button .left {
+      margin-left: 55px;
+      padding: 15px 54px;
+  }
