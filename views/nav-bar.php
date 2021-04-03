@@ -21,14 +21,15 @@ if (isset($_POST['Logout'])) {
                 <?php } else {
                     $db = new Database();
                     $result = mysqli_query($db->conn, "SELECT `employees`.`fullname`, `accounts`.`permisson` FROM `accounts` INNER JOIN `employees` ON `accounts`.`user_id` = `employees`.`user_id` WHERE `accounts`.`user_id` = " . $_SESSION['logined']);
-                    $user = mysqli_fetch_row($result);
+                    $logined = mysqli_fetch_row($result);
                 ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Welcome <?php echo $user[0]; ?> !!
+                            Welcome <?php echo $logined[0]; ?> !!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <?php if ($user[1] == 0) {
+                            <li><a class='dropdown-item' href='/CoffeeStore/views/manage-sell.php'>Manage Sell</a></li>
+                            <?php if ($logined[1] == 0) {
                                 echo "<li><a class='dropdown-item' href='/CoffeeStore/views/manage-accounts.php'>Manage Account</a></li>";
                                 echo "<li><a class='dropdown-item' href='/CoffeeStore/views/manage-menu.php'>Manage Menu</a></li>";
                                 echo "<hr class='dropdown-divider'>";

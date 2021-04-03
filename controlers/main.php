@@ -41,7 +41,25 @@ class Ctrl_Main{
             $sql = "SELECT `permisson` FROM `accounts` WHERE `user_id` = ".$_SESSION['logined'].";";
             $query = mysqli_query($db->conn, $sql);
             $result = mysqli_fetch_row($query);
-            if ($result  == 1) header("location: ../views/homepage.php");
+            if ($result[0] == 1) header("location: ../views/homepage.php");
+        } else header("location: ../views/homepage.php");
+    }
+    public static function getPermisson()
+    {
+        if (isset($_SESSION['logined']))
+        {
+            $db = new Database();
+            $sql = "SELECT `permisson` FROM `accounts` WHERE `user_id` = ".$_SESSION['logined'].";";
+            $query = mysqli_query($db->conn, $sql);
+            $result = mysqli_fetch_row($query);
+            return $result[0];
+        }
+    }
+    public static function checkLogined()
+    {
+        if (!isset($_SESSION['logined']))
+        {
+            header("location: ../views/homepage.php");
         }
     }
 }

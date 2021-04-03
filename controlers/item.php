@@ -1,5 +1,37 @@
 <?php
 class Ctrl_Item{
+    public static function Search( $keyword, $sort )
+    {
+        $db = new Database();
+        $sql = "SELECT `item_id`, `name`, `price` FROM `menu` 
+                WHERE `name` LIKE '%$keyword'
+                OR `name` LIKE '$keyword%'
+                OR `name` LIKE '%$keyword%'
+                ORDER BY `price` $sort;";
+        $query = mysqli_query($db->conn, $sql);
+        if ($query) {
+            $result = mysqli_fetch_all($query);
+            return $result;
+        } else {
+            return $db->conn->error." $sql";
+        }
+        mysqli_close($db->conn);
+    }
+
+    public static function GetList()
+    {
+        $db = new Database();
+        $sql = "SELECT * FROM `menu`";
+        $query = mysqli_query($db->conn, $sql);
+        if ($query) {
+            $result = mysqli_fetch_all($query);
+            return $result;
+        } else {
+            return $db->conn->error." $sql";
+        }
+        mysqli_close($db->conn);
+    }
+
     public static function Get( $itemId )
     {
         $db = new Database();
