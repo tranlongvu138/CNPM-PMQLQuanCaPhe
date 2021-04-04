@@ -31,19 +31,18 @@ include('../controlers/manage-menu.php');
                     <th class="col-2">Function</th>
                 </tr>
             </thead>
-            <?php
-            foreach ($menu as $item) {
-                echo "<tbody>";
-                echo "<tr class='d-flex'>";
-                echo "<th class='col-1'>$item[0]</th>";
-                echo "<td class='col-6'>$item[1]</td>";
-                echo "<td class='col-3'>$item[2] VND</td>";
-                echo "<td class='col-2'><i class='far fa-edit'><a href='edit-item.php?ID=$item[0]'> Edit</a></i></td>";
-                echo "</tr>";
-                echo "</tbody>";
-            }
-            mysqli_close($db->conn);
-            ?>
+            <tbody>
+                <?php
+                foreach ($menu as $item) {
+                    echo "<tr class='d-flex'>";
+                    echo "<th class='col-1'>$item[0]</th>";
+                    echo "<td class='col-6'>$item[1]</td>";
+                    echo "<td class='col-3'>$item[2] VND</td>";
+                    echo "<td class='col-2'><i class='far fa-edit'><a href='edit-item.php?ID=$item[0]'> Edit</a></i></td>";
+                    echo "</tr>";
+                }
+                mysqli_close($db->conn);
+                ?></tbody>
         </table>
 
         <nav aria-label="Page navigation">

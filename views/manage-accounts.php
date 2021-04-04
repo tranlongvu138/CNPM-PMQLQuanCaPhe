@@ -33,9 +33,9 @@ include('../controlers/manage-accounts.php');
                     <th class="col-1">Function</th>
                 </tr>
             </thead>
+            <tbody>
             <?php
             foreach ($user as $user) {
-                echo "<tbody>";
                 echo "<tr class='d-flex'>";
                 echo "<th class='col-1'>$user[0]</th>";
                 echo "<td class='col-2'>$user[1]</td>";
@@ -53,10 +53,10 @@ include('../controlers/manage-accounts.php');
                 echo "<td class='col-2'>$user[5]</td>";
                 echo "<td class='col-1'><i class='far fa-edit'><a href='edit-account.php?ID=$user[0]'> Edit</a></i></td>";
                 echo "</tr>";
-                echo "</tbody>";
             }
             mysqli_close($db->conn);
             ?>
+            </tbody>
         </table>
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
             <div class="modal-dialog">

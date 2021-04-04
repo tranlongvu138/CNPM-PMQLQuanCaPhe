@@ -30,6 +30,7 @@ if (isset($_POST['Logout'])) {
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class='dropdown-item' href='/CoffeeStore/views/manage-sell.php'>Manage Sell</a></li>
                             <?php if ($logined[1] == 0) {
+                                echo "<li><a class='dropdown-item' href='/CoffeeStore/views/statistical-report.php'>Statistical Report</a></li>";
                                 echo "<li><a class='dropdown-item' href='/CoffeeStore/views/manage-accounts.php'>Manage Account</a></li>";
                                 echo "<li><a class='dropdown-item' href='/CoffeeStore/views/manage-menu.php'>Manage Menu</a></li>";
                                 echo "<hr class='dropdown-divider'>";
