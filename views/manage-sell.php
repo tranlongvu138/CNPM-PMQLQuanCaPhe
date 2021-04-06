@@ -1,4 +1,4 @@
-<?php include_once('../controlers/manage-sell.php'); ?>
+<?php include('../controlers/manage-sell.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 

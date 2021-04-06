@@ -28,14 +28,14 @@ if (isset($_POST['Logout'])) {
                             Welcome <?php echo $logined[0]; ?> !!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <?php if ($logined[1] == 1) { ?>
                             <li><a class='dropdown-item' href='/CoffeeStore/views/manage-sell.php'>Manage Sell</a></li>
-                            <?php if ($logined[1] == 0) {
-                                echo "<li><a class='dropdown-item' href='/CoffeeStore/views/statistical-report.php'>Statistical Report</a></li>";
-                                echo "<li><a class='dropdown-item' href='/CoffeeStore/views/manage-accounts.php'>Manage Account</a></li>";
-                                echo "<li><a class='dropdown-item' href='/CoffeeStore/views/manage-menu.php'>Manage Menu</a></li>";
-                                echo "<hr class='dropdown-divider'>";
-                            }
-                            ?>
+                            <?php } else { ?>
+                                <li><a class='dropdown-item' href='/CoffeeStore/views/statistical-report.php'>Statistical Report</a></li>
+                                <li><a class='dropdown-item' href='/CoffeeStore/views/manage-accounts.php'>Manage Account</a></li>
+                                <li><a class='dropdown-item' href='/CoffeeStore/views/manage-menu.php'>Manage Menu</a></li>
+                                <hr class='dropdown-divider'>
+                            <?php } ?>
                             <form method="POST" action="../views/nav-bar.php">
                                 <input class="btn btn-link dropdown-item" type="submit" name="Logout" value="Log Out" />
                             </form>

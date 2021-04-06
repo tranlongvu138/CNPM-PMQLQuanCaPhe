@@ -20,8 +20,9 @@
         <div class="d-grid gap-2 col-6 col-md-3 col-xl-2 my-auto mx-auto">
             <?php if (isset($_SESSION["logined"])) {
                 echo Ctrl_Main::getPermisson(); ?>
+                <?php if (Ctrl_Main::getPermisson() == '1') { ?>
                 <a class="h1 fw-bold btn btn-lg btn-success shadow my-3" href="/CoffeeStore/views/manage-sell.php" role="button">Manage Sell</a>
-                <?php if (Ctrl_Main::getPermisson() == '0') { ?>
+                <?php } else { ?>
                     <a class="h1 fw-bold btn btn-lg btn-primary shadow my-3" href="/CoffeeStore/views/statistical-report.php" role="button">Statistical Report</a>
                     <a class="h1 fw-bold btn btn-lg btn-danger shadow my-3" href="/CoffeeStore/views/manage-accounts.php" role="button">Manage Accounts</a>
                     <a class="h1 fw-bold btn btn-lg btn-warning shadow my-3" href="/CoffeeStore/views/manage-menu.php" role="button">Manage Menu</a>

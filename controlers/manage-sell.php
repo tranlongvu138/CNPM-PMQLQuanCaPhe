@@ -17,8 +17,10 @@ if (isset($_POST['Purchase'])) {
     if ($sqlBillDetail != "") {
         $total = $_POST['total'];
         $table = $_POST['table'];
-        $sqlquery = "START TRANSACTION; SET @empl_id = (SELECT `empl_id` from `employees` WHERE `user_id` = " . $_SESSION['logined'] . "); 
-                    INSERT INTO `bills` (`total`, `table_id`, `empl_id`) VALUES ($total, $table, @empl_id); SET @bill_id = LAST_INSERT_ID(); " . $sqlBillDetail . "COMMIT;";
+        $sqlquery = "START TRANSACTION; 
+                    SET @empl_id = (SELECT `empl_id` from `employees` WHERE `user_id` = " . $_SESSION['logined'] . "); 
+                    INSERT INTO `bills` (`total`, `table_id`, `empl_id`) VALUES ($total, $table, @empl_id); 
+                    SET @bill_id = LAST_INSERT_ID(); $sqlBillDetail COMMIT;";
         $db = new Database();
         $query = mysqli_multi_query($db->conn, $sqlquery);
         if ($query) {
